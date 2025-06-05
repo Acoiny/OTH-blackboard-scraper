@@ -33,7 +33,7 @@ class Weekday:
         else:
             raise Exception(f'Unknown meal type: {meal_type}')
 
-    def to_markdown(self) -> str:
+    def to_markdown_str(self) -> str:
         res = '## Suppen\n'
         for su in self.suppen:
             res += f'- {su}\n'
@@ -71,8 +71,9 @@ class Mensaplan:
     Gets the current mensaplan and handles stringifying it and
     formatting as markdown
     """
-    def __init__(self) -> None:
-        self.url = f'https://www.stwno.de/infomax/daten-extern/csv/HS-R-tag/{dt.date.today().isocalendar()[1]}.csv'
+    def __init__(self, calendar_week: int | None = None) -> None:
+        if calendar_week == None: calendar_week = dt.date.today().isocalendar()[1]
+        self.url = f'https://www.stwno.de/infomax/daten-extern/csv/HS-R-tag/{calendar_week}.csv'
         self.days: dict[str, Weekday] = {}
 
     def get(self) -> None:
@@ -83,9 +84,8 @@ class Mensaplan:
             lines = [l.decode('latin-1').strip() for l in url.readlines()]
             csv_reader = csv.reader(lines, delimiter=';')
 
-            # aquire the different fields
-            fields = next(csv_reader)
-            print(fields)
+            # discard fields
+            next(csv_reader)
 
             for row in csv_reader:
                 day = self.days.get(row[1])
@@ -96,7 +96,7 @@ class Mensaplan:
                 day.add_meal(meal, row[2])
 
 
-    def to_markdown(self) -> str:
+    def to_markdown_str(self) -> str:
         res = ''
 
         keys_to_names = [
@@ -109,11 +109,11 @@ class Mensaplan:
 
         for key, name in keys_to_names:
             res += f'# {name}\n'
-            res += f'{self.days[key].to_markdown()}'
+            res += f'{self.days[key].to_markdown_str()}'
 
         return res
 
-    def stringify_day(self, index: int) -> str:
+    def stringify_day(self, index: int | str) -> str:
         keys_to_names = [
             ('Mo', 'Montag'),
             ('Di', 'Dienstag'),
@@ -121,18 +121,34 @@ class Mensaplan:
             ('Do', 'Donnerstag'),
             ('Fr', 'Freitag')
         ]
+        keys_to_name_dict = {
+            'Mo': 'Monday',
+            'Di': 'Dienstag',
+            'Mi': 'Mittwoch',
+            'Do': 'Donnerstag',
+            'Fr': 'Freitag'
+        }
 
-        return f'{keys_to_names[index][1]}:\n{self.days[keys_to_names[index][0]]}\n'
+
+        try:
+            if isinstance(index, int):
+                return f'{keys_to_names[index][1]}:\n{self.days[keys_to_names[index][0]]}\n'
+            else:
+                if keys_to_name_dict.get(index) == None:
+                    return f'Invalid day: {index}!'
+                return f'{keys_to_name_dict[index]}:\n{self.days[index]}\n'
+        except:
+            return ''
 
     def __str__(self) -> str:
         res = ''
 
-        for i in range(5):
+        for i in range(4):
             res += self.stringify_day(i)
 
         return res
 
-
-m = Mensaplan()
-m.get()
-print(m)
+if __name__ == '__main__':
+    m = Mensaplan()
+    m.get()
+    print(m)

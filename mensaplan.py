@@ -6,9 +6,11 @@ class Meal:
     def __init__(self, name: str, kennzeichnung: str, price_students: str, price_workers: str, price_guest: str) -> None:
         self.name = name
         self.kennzeichnung = kennzeichnung
-        self.price_students = float(price_students)
-        self.price_workers = float(price_workers)
-        self.price_guest = float(price_guest)
+        self.price_students = float(price_students.replace(',', '.'))
+        self.price_workers = float(price_workers.replace(',', '.'))
+        self.price_guest = float(price_guest.replace(',', '.'))
+    def __str__(self) -> str:
+        return f'{self.name} - {self.kennzeichnung}: {self.price_students}€'
 
 class Weekday:
     def __init__(self, datum: str) -> None:
@@ -32,8 +34,36 @@ class Weekday:
             raise Exception(f'Unknown meal type: {meal_type}')
 
     def to_markdown(self) -> str:
-        res = ''
-        
+        res = '## Suppen\n'
+        for su in self.suppen:
+            res += f'- {su}\n'
+        res += '## Vorspeisen\n'
+        for vs in self.vorspeisen:
+            res += f'- {vs}\n'
+        res += '## Hauptspeisen\n'
+        for hs in self.hauptspeisen:
+            res += f'- {hs}\n'
+        res += '## Nachspeisen\n'
+        for ns in self.nachspeisen:
+            res += f'- {ns}\n'
+
+        return res
+    
+    def __str__(self) -> str:
+        res = '    Suppen:\n'
+
+        for su in self.suppen:
+            res += f'       - {su}\n'
+        res += '    Vorspeisen:\n'
+        for vs in self.vorspeisen:
+            res += f'       - {vs}\n'
+        res += '    Hauptspeisen:\n'
+        for hs in self.hauptspeisen:
+            res += f'       - {hs}\n'
+        res += '    Nachspeisen:\n'
+        for ns in self.nachspeisen:
+            res += f'       - {ns}\n'
+
         return res
 
 class Mensaplan:
@@ -41,8 +71,8 @@ class Mensaplan:
     Gets the current mensaplan and handles stringifying it and
     formatting as markdown
     """
-    def __init__(self, url: str) -> None:
-        self.url = url
+    def __init__(self) -> None:
+        self.url = f'https://www.stwno.de/infomax/daten-extern/csv/HS-R-tag/{dt.date.today().isocalendar()[1]}.csv'
         self.days: dict[str, Weekday] = {}
 
     def get(self) -> None:
@@ -66,5 +96,43 @@ class Mensaplan:
                 day.add_meal(meal, row[2])
 
 
-m = Mensaplan('https://www.stwno.de/infomax/daten-extern/csv/HS-R-tag/23.csv')
+    def to_markdown(self) -> str:
+        res = ''
+
+        keys_to_names = [
+            ('Mo', 'Montag'),
+            ('Di', 'Dienstag'),
+            ('Mi', 'Mittwoch'),
+            ('Do', 'Donnerstag'),
+            ('Fr', 'Freitag')
+        ]
+
+        for key, name in keys_to_names:
+            res += f'# {name}\n'
+            res += f'{self.days[key].to_markdown()}'
+
+        return res
+
+    def stringify_day(self, index: int) -> str:
+        keys_to_names = [
+            ('Mo', 'Montag'),
+            ('Di', 'Dienstag'),
+            ('Mi', 'Mittwoch'),
+            ('Do', 'Donnerstag'),
+            ('Fr', 'Freitag')
+        ]
+
+        return f'{keys_to_names[index][1]}:\n{self.days[keys_to_names[index][0]]}\n'
+
+    def __str__(self) -> str:
+        res = ''
+
+        for i in range(5):
+            res += self.stringify_day(i)
+
+        return res
+
+
+m = Mensaplan()
 m.get()
+print(m)

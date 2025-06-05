@@ -16,7 +16,6 @@ class Weekday:
     def __init__(self, datum: str) -> None:
         self.datum = dt.datetime.strptime(datum, "%d.%m.%Y").date()
         self.suppen: list[Meal] = []
-        self.vorspeisen: list[Meal] = []
         self.hauptspeisen: list[Meal] = []
         self.beilagen: list[Meal] = []
         self.nachspeisen: list[Meal] = []
@@ -37,8 +36,8 @@ class Weekday:
         res = '## Suppen\n'
         for su in self.suppen:
             res += f'- {su}\n'
-        res += '## Vorspeisen\n'
-        for vs in self.vorspeisen:
+        res += '## Beilagen\n'
+        for vs in self.beilagen:
             res += f'- {vs}\n'
         res += '## Hauptspeisen\n'
         for hs in self.hauptspeisen:
@@ -54,8 +53,8 @@ class Weekday:
 
         for su in self.suppen:
             res += f'       - {su}\n'
-        res += '    Vorspeisen:\n'
-        for vs in self.vorspeisen:
+        res += '    Beilagen:\n'
+        for vs in self.beilagen:
             res += f'       - {vs}\n'
         res += '    Hauptspeisen:\n'
         for hs in self.hauptspeisen:

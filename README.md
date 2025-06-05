@@ -12,3 +12,20 @@ python3 oth_tool.py black
 python3 oth_tool.py b -m blackboard.md
 ```
 A few aliases for `blackboard` are supported.
+
+## Mensaplan
+Receive the mensaplan for the current week (or any calendar week).
+```python
+# print to console
+python3 oth_tool.py mensaplan
+
+# save into mensaplan.md
+python3 oth_tool.py m -m mensaplan.md
+```
+This also supports a few aliases.
+
+### Options
+- `-d` day of the week (e.g. monday/montag, dienstag, ...)
+- `-w` calendar week to view
+
+Weekdays also support a few aliases.

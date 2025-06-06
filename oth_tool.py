@@ -49,7 +49,7 @@ def main() -> None:
                 elif day in ('friday', 'freitag', 'fr', 'f'):
                     print(mensa.stringify_day(4))
                 else:
-                    parser.exit(1, f'Invalid weekday "{args.weekday}"')
+                    parser.exit(1, f'Invalid weekday "{args.weekday}"\n')
             else:
                 print(mensa)
     else:

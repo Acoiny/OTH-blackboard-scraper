@@ -7,7 +7,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('command')
+parser.add_argument('command', help='The action to execute, either mensaplan or blackboard', type=str)
 parser.add_argument('-m', '--markdown', help='Save the blackboard to FILE', metavar='FILE', type=str)
 parser.add_argument('-d', '--weekday', help='Only retrieves plan of DAY (mensaplan only)', metavar='DAY', type=str)
 parser.add_argument('-w', '--calendar_week', help='Retrieves plan for calendar week WEEK (mensaplan only)', metavar='WEEK', type=int)

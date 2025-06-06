@@ -142,7 +142,7 @@ class Mensaplan:
     def __str__(self) -> str:
         res = ''
 
-        for i in range(4):
+        for i in range(5):
             res += self.stringify_day(i)
 
         return res

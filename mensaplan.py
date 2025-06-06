@@ -10,7 +10,7 @@ class Meal:
         self.price_workers = float(price_workers.replace(',', '.'))
         self.price_guest = float(price_guest.replace(',', '.'))
     def __str__(self) -> str:
-        return f'{self.name} - {self.kennzeichnung}: {self.price_students}€'
+        return f'{self.name} - {self.kennzeichnung}: {self.price_students:.2f}€'
 
 class Weekday:
     def __init__(self, datum: str) -> None:

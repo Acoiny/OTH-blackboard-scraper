@@ -8,9 +8,10 @@ import argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument('command', help='The action to execute, either mensaplan or blackboard', type=str)
-parser.add_argument('-m', '--markdown', help='Save the blackboard to FILE', metavar='FILE', type=str)
+parser.add_argument('-m', '--markdown', help='Format the output as markdown', action='store_true')
 parser.add_argument('-d', '--weekday', help='Only retrieves plan of DAY (mensaplan only)', metavar='DAY', type=str)
 parser.add_argument('-w', '--calendar_week', help='Retrieves plan for calendar week WEEK (mensaplan only)', metavar='WEEK', type=int)
+parser.add_argument('-t', '--today', help='Show the mensaplan for today (mensaplan only)', action='store_true')
 
 args = parser.parse_args()
 
@@ -19,22 +20,16 @@ def main() -> None:
         blackboard = Blackboard('https://informatik-mathematik.oth-regensburg.de/schwarzes-brett')
         blackboard.scrape()
 
-        if args.markdown != None:
-            with open(args.markdown, 'w') as f:
-                f.write(blackboard.to_markdown_str())
+        if args.markdown:
+            print(blackboard.to_markdown_str())
         else:
             print(blackboard)
     elif args.command in ('mensaplan', 'mensa', 'me', 'm'):
-        mensa = None
-        if args.calendar_week:
-            mensa = Mensaplan(args.calendar_week)
-        else:
-            mensa = Mensaplan()
+        mensa = Mensaplan(args.calendar_week, args.today)
         mensa.get()
 
-        if args.markdown != None:
-            with open(args.markdown, 'w') as f:
-                f.write(mensa.to_markdown_str())
+        if args.markdown:
+            print(mensa.to_markdown_str())
         else:
             if args.weekday != None:
                 day = args.weekday.lower()

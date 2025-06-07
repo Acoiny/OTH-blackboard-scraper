@@ -8,8 +8,8 @@ Will either print it to the terminal or save into a markdown file.
 # print blackboard to terminal
 python3 oth_tool.py black
 
-# save into blackboard.md
-python3 oth_tool.py b -m blackboard.md
+# print as markdown
+python3 oth_tool.py b -m
 ```
 A few aliases for `blackboard` are supported.
 
@@ -19,13 +19,13 @@ Receive the mensaplan for the current week (or any calendar week).
 # print to console
 python3 oth_tool.py mensaplan
 
-# save into mensaplan.md
-python3 oth_tool.py m -m mensaplan.md
-```
+# print as markdown
+python3 oth_tool.py m -m```
 This also supports a few aliases.
 
 ### Options
 - `-d` day of the week (e.g. monday/montag, dienstag, ...)
 - `-w` calendar week to view
+- `-t` print today's mensaplan
 
 Weekdays also support a few aliases.

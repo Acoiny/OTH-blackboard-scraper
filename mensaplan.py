@@ -118,7 +118,7 @@ class Mensaplan:
 
             day = self.days.get(key, None)
 
-            if day == None: res += 'No mensaplan for today!'
+            if day == None: res += 'No mensaplan for today!\n'
             else: res += f'{day.to_markdown_str()}'
         else:
             for key, name in keys_to_names[:-2]:
@@ -141,7 +141,7 @@ class Mensaplan:
         try:
             return f'{keys_to_names[index][1]}:\n{self.days[keys_to_names[index][0]]}\n'
         except:
-            return f'No mensaplan for {keys_to_names[index][1]}'
+            return f'No mensaplan for {keys_to_names[index][1]}\n'
 
     def __str__(self) -> str:
         res = ''

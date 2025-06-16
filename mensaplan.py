@@ -114,7 +114,7 @@ class Mensaplan:
         if self.today:
             index = dt.date.today().isocalendar()[2] - 1
             key, name = keys_to_names[index]
-            res += f'# {name}'
+            res += f'# {name}\n'
 
             day = self.days.get(key, None)
 

@@ -122,8 +122,11 @@ class Mensaplan:
             else: res += f'{day.to_markdown_str()}'
         else:
             for key, name in keys_to_names[:-2]:
-                res += f'# {name}\n'
-                res += f'{self.days[key].to_markdown_str()}'
+                try:
+                    res += f'# {name}\n'
+                    res += f'{self.days[key].to_markdown_str()}'
+                except:
+                    res += f'> [!WARNING]\n> No mensaplan!\n'
 
         return res
 
